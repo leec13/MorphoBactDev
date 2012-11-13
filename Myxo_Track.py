@@ -23,9 +23,8 @@ import random
 
 username=getpass.getuser()
 
-mypath=os.path.expanduser(IJ.getDirectory("plugins")+"MeasureCells")
-#mypath=os.path.expanduser("~/Dropbox/MacrosDropBox/py/MeasureCells_7")
-#mypath=os.path.expanduser(os.path.join("~","Dropbox","MacrosDropBox","py","MeasureCells_7"))
+#mypath=os.path.expanduser(IJ.getDirectory("plugins")+"MeasureCells")
+mypath=os.path.expanduser(os.path.join("~","Dropbox","MacrosDropBox","py","MorphoBact2"))
 sys.path.append(mypath)
 
 from org.python.core import codecs
