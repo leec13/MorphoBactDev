@@ -13,8 +13,8 @@ from ij.gui import Roi
 
 from java.lang import Double,Boolean
 
-mypath=os.path.expanduser(IJ.getDirectory("plugins")+"MeasureCells")
-#mypath=os.path.expanduser("~/Dropbox/MacrosDropBox/py/MeasureCells_9")
+mypath=os.path.expanduser(IJ.getDirectory("plugins")+"MeasureCellsDev")
+##mypath=os.path.expanduser(os.path.join("~","Dropbox","MacrosDropBox","py","MorphoBact2"))
 sys.path.append(mypath)
 
 username=getpass.getuser()
