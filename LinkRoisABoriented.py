@@ -23,16 +23,15 @@ from org.python.core import codecs
 codecs.setDefaultEncoding('utf-8')
 
 from MorphoBact import Morph
+import Boolean_Rois
 
 def initDict(Rois, Zones) :
 	dictRois={}
 	dictRois.clear()
 	for roi in Rois :
-		shaperoi = ShapeRoi(roi)
 		for zone in Zones :
-			zoneshape = ShapeRoi(zone)
-			intersect = zoneshape.and(shaperoi)
-			if intersect.shapeToRoi().getBounds().width+intersect.shapeToRoi().getBounds().height > 0 :
+			intersect = Boolean_Rois.inter(roi, zone)
+			if intersect[1] > 0 :
 				dictRois[roi]=(roi,zone)
 				continue
 	return dictRois
@@ -44,19 +43,10 @@ def initSets(Rois, Zones) :
 	for zone in Zones :
 		setZoneRois=set()
 		setZoneRois.clear()
-		
-		zoneshape = ShapeRoi(zone)
 		for roi in Rois :
-			shaperoi = ShapeRoi(roi)
-			intersect = shaperoi.and(zoneshape)
-			
-			if intersect.shapeToRoi().getBounds().width+intersect.shapeToRoi().getBounds().height != 0 : 
-				setZoneRois.add(roi)
-				#print intersect.shapeToRoi().getBounds().width+intersect.shapeToRoi().getBounds().height
-				#print setZoneRois
-
-		if len(setZoneRois) >0 : dictZ[zone]=(zone, setZoneRois)
-
+			intersect = Boolean_Rois.inter(roi, zone)
+			if intersect[1] > 0 : setZoneRois.add(roi)
+		dictZ[zone]=(zone, setZoneRois)
 	return dictZ
 
 
@@ -89,7 +79,6 @@ def link(RoisA, RoisB, RoisProj) :
 	
 	for roia in RoisA : 
 		zone = dictRoisA[roia][1]
-		shapezone = ShapeRoi(zone)
 		roiszone = dictZonesB[zone][1]
 		if len(roiszone)==0 :
 			print "*****************"
@@ -98,29 +87,42 @@ def link(RoisA, RoisB, RoisProj) :
 			print "*****************"
 			roib = roiszone.pop()
 			print "link", roia, " to ", roib
-			shapeA = ShapeRoi(roia)
-			shapeB = ShapeRoi(roib)
-			intersec = shapeB.and(shapeA).shapeToRoi()
-			m = Morph(img, intersec)
-			if m.Area<maxArea : 
-				rm.addRoi(intersec)
-				print m.Area
-			else : 
-				m=Morph(img, roib)
-				rm.addRoi(roib)
+			rm.addRoi(roib)
 			
 		else :
-			print "*****************"
-			templist=[]
+			intersectlist=[]
+			noninterlist=[]
+			tempdict={}
 			for roib in roiszone :
-				shapeA = ShapeRoi(roia)
-				shapeB = ShapeRoi(roib)
-				intersec = shapeB.and(shapeA).shapeToRoi()
-				m = Morph(img, intersec)
-				if m.Area<maxArea : 
-					rm.addRoi(intersec)
-					print m.Area
-					templist.append(m.Area)
+				intersect = Boolean_Rois.inter(roia, roib)
+				if intersect[1] > 0 :
+					intersectlist.append(roib)
+					tempdict[intersect[1]]=roib
+					
+				else : 
+					noninterlist.append(roib)
+			
+			if len(intersectlist)>1 : 
+				key=max(tempdict.keys())
+				rm.addRoi(tempdict[key])
+				print "*****************"
+				print "link", roia, " to ", tempdict[key]
+				
+			elif len(intersectlist)==1 :
+				rm.addRoi(intersectlist[0])
+				print "*****************"
+				print "link", roia, " to ", intersectlist[0]
+			
+			else :
+				if len(noninterlist)>1 :
+					pass
+				elif len(noninterlist) == 1 :
+					rm.addRoi(noninterlist[0])
+					print "*****************"
+					print "link", roia, " to ", noninterlist[0]
+				else :
+					pass
+
 	
 	#return (liens,new,lost)
 	
@@ -131,7 +133,7 @@ if __name__ == "__main__":
 	dir = str(os.path.expanduser(os.path.join("~","Dropbox","MacrosDropBox","py","MorphoBact2", "testmasks","")))
 	rm.runCommand("reset")
 	#rm.runCommand("Open", "/Users/famille/Dropbox/MacrosDropBox/py/MorphoBact2/testmasks/RoisA.zip")
-	rm.runCommand("Open", dir+"RoisA.zip")
+	rm.runCommand("Open", dir+"RoiSetT01.zip")
 	roisa = rm.getRoisAsArray()
 	rm.runCommand("reset")
 	#rm.runCommand("Open", "/Users/famille/Dropbox/MacrosDropBox/py/MorphoBact2/testmasks/zones.zip")
@@ -139,7 +141,7 @@ if __name__ == "__main__":
 	roisz = rm.getRoisAsArray()
 	rm.runCommand("reset")
 	#rm.runCommand("Open", "/Users/famille/Dropbox/MacrosDropBox/py/MorphoBact2/testmasks/RoisB.zip")
-	rm.runCommand("Open", dir+"RoisB.zip")
+	rm.runCommand("Open", dir+"RoiSetT05.zip")
 	roisb = rm.getRoisAsArray()
 	rm.runCommand("reset")
 	
