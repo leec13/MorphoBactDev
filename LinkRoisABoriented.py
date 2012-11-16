@@ -82,11 +82,11 @@ def link(RoisA, RoisB, RoisProj) :
 		roiszone = dictZonesB[zone][1]
 		if len(roiszone)==0 :
 			print "*****************"
-			print "LOST"
+			print roia.getName(),"LOST"
 		elif len(roiszone)==1 : 
 			print "*****************"
 			roib = roiszone.pop()
-			print "link", roia, " to ", roib
+			print "link", roia.getName(), " to ", roib.getName()
 			rm.addRoi(roib)
 			
 		else :
@@ -106,22 +106,22 @@ def link(RoisA, RoisB, RoisProj) :
 				key=max(tempdict.keys())
 				rm.addRoi(tempdict[key])
 				print "*****************"
-				print "link", roia, " to ", tempdict[key]
+				print "link", roia.getName(), " to ", tempdict[key].getName()
 				
 			elif len(intersectlist)==1 :
 				rm.addRoi(intersectlist[0])
 				print "*****************"
-				print "link", roia, " to ", intersectlist[0]
+				print "link", roia.getName(), " to ", intersectlist[0].getName()
 			
 			else :
 				if len(noninterlist)>1 :
-					pass
+					print "pass plusieurs cibles", roia.getName()
 				elif len(noninterlist) == 1 :
 					rm.addRoi(noninterlist[0])
 					print "*****************"
-					print "link", roia, " to ", noninterlist[0]
+					print "link", roia.getName(), " to ", noninterlist[0].getName()
 				else :
-					pass
+					print "jamais ici", roia.getName()
 
 	
 	#return (liens,new,lost)
@@ -141,7 +141,7 @@ if __name__ == "__main__":
 	roisz = rm.getRoisAsArray()
 	rm.runCommand("reset")
 	#rm.runCommand("Open", "/Users/famille/Dropbox/MacrosDropBox/py/MorphoBact2/testmasks/RoisB.zip")
-	rm.runCommand("Open", dir+"RoiSetT05.zip")
+	rm.runCommand("Open", dir+"RoiSetT40.zip")
 	roisb = rm.getRoisAsArray()
 	rm.runCommand("reset")
 	
