@@ -84,27 +84,43 @@ def link(RoisA, RoisB, RoisProj) :
 	dictZonesA = initSets(RoisA, RoisProj)
 	dictZonesB = initSets(RoisB, RoisProj)
 
+	img=IJ.getImage()
+	maxArea = img.getWidth()*img.getHeight()
+	
 	for roia in RoisA : 
 		zone = dictRoisA[roia][1]
 		shapezone = ShapeRoi(zone)
 		roiszone = dictZonesB[zone][1]
-		if len(roiszone)==1 : 
+		if len(roiszone)==0 :
 			print "*****************"
-			print "link", roia, " to ", roiszone.pop()
+			print "LOST"
+		elif len(roiszone)==1 : 
+			print "*****************"
+			roib = roiszone.pop()
+			print "link", roia, " to ", roib
+			shapeA = ShapeRoi(roia)
+			shapeB = ShapeRoi(roib)
+			intersec = shapeB.and(shapeA).shapeToRoi()
+			m = Morph(img, intersec)
+			if m.Area<maxArea : 
+				rm.addRoi(intersec)
+				print m.Area
+			else : 
+				m=Morph(img, roib)
+				rm.addRoi(roib)
+			
 		else :
 			print "*****************"
 			templist=[]
-			img=IJ.getImage()
 			for roib in roiszone :
 				shapeA = ShapeRoi(roia)
 				shapeB = ShapeRoi(roib)
 				intersec = shapeB.and(shapeA).shapeToRoi()
 				m = Morph(img, intersec)
-				print Morph(img, roia).Area, m.Area, Morph(img, roib).Area
-				templist.append(m.Area)
-			print templist
-			
-		
+				if m.Area<maxArea : 
+					rm.addRoi(intersec)
+					print m.Area
+					templist.append(m.Area)
 	
 	#return (liens,new,lost)
 	
@@ -112,14 +128,18 @@ if __name__ == "__main__":
 	print "start"
 	rm = RoiManager.getInstance()
 	if (rm==None): rm = RoiManager()
+	dir = str(os.path.expanduser(os.path.join("~","Dropbox","MacrosDropBox","py","MorphoBact2", "testmasks","")))
 	rm.runCommand("reset")
-	rm.runCommand("Open", "/Users/famille/Dropbox/MacrosDropBox/py/MorphoBact2/testmasks/RoisA.zip")
+	#rm.runCommand("Open", "/Users/famille/Dropbox/MacrosDropBox/py/MorphoBact2/testmasks/RoisA.zip")
+	rm.runCommand("Open", dir+"RoisA.zip")
 	roisa = rm.getRoisAsArray()
 	rm.runCommand("reset")
-	rm.runCommand("Open", "/Users/famille/Dropbox/MacrosDropBox/py/MorphoBact2/testmasks/zones.zip")
+	#rm.runCommand("Open", "/Users/famille/Dropbox/MacrosDropBox/py/MorphoBact2/testmasks/zones.zip")
+	rm.runCommand("Open", dir+"zones.zip")
 	roisz = rm.getRoisAsArray()
 	rm.runCommand("reset")
-	rm.runCommand("Open", "/Users/famille/Dropbox/MacrosDropBox/py/MorphoBact2/testmasks/RoisB.zip")
+	#rm.runCommand("Open", "/Users/famille/Dropbox/MacrosDropBox/py/MorphoBact2/testmasks/RoisB.zip")
+	rm.runCommand("Open", dir+"RoisB.zip")
 	roisb = rm.getRoisAsArray()
 	rm.runCommand("reset")
 	
