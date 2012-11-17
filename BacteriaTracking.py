@@ -38,6 +38,7 @@ codecs.setDefaultEncoding('utf-8')
 from MorphoBact import Morph
 from BacteriaCell import Bacteria_Cell
 from LinkRoisAB import link
+from LinkRoisABoriented import link as link2
 from RangeRois import RangeRois
 
 class Bacteria_Tracking(object) :
@@ -316,9 +317,23 @@ class Bacteria_Tracking(object) :
 		 	RoisB = self.__calRois(imp,i)
 		 	# link returns 3 lists of tuples : one of rois that correspond, one of new rois at a given slide, and one of lost rois at a given slide.
 		 	outlink = link(imp, i-1, i, RoisA,RoisB, self.__distparam, self.__distmethod, self.__optionAngle, self.__nbdigits, self.__optionNewCells)
-		 	liens=outlink[0]
-		 	news=outlink[1]
-		 	losts=outlink[2]
+		 	#liens=outlink[0]
+		 	#news=outlink[1]
+		 	#losts=outlink[2]
+
+		 	dir = str(os.path.expanduser(os.path.join("~","Dropbox","MacrosDropBox","py","MorphoBact2", "testmasks","")))
+		 	rm = RoiManager.getInstance()
+			if (rm==None): rm = RoiManager()
+			rm.runCommand("reset")
+			rm.runCommand("Open", dir+"zones.zip")
+			roisz = rm.getRoisAsArray()
+			outlink2 = link2(RoisA, RoisB, roisz)
+
+			liens=outlink2[0]
+		 	news=outlink2[1]
+		 	losts=outlink2[2]
+
+			rm.runCommand("reset")
 
 			# we update the tab of rois for the cells for which we found a new ROI in another slide.
 			lastindex=0

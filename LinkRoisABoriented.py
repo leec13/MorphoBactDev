@@ -66,6 +66,11 @@ def link(RoisA, RoisB, RoisProj) :
 	dictRoisA={}
 	dictRoisB={}
 
+	liens=[]
+	new=[]
+	lost=[]
+	findlost=[]
+
 	rm = RoiManager.getInstance()
 	rm.runCommand("reset")
 	
@@ -81,13 +86,16 @@ def link(RoisA, RoisB, RoisProj) :
 		zone = dictRoisA[roia][1]
 		roiszone = dictZonesB[zone][1]
 		if len(roiszone)==0 :
-			print "*****************"
-			print roia.getName(),"LOST"
+			#print "*****************"
+			#print roia.getName(),"LOST"
+			lost.append(("LOST",roia))
 		elif len(roiszone)==1 : 
-			print "*****************"
+			#print "*****************"
 			roib = roiszone.pop()
-			print "link", roia.getName(), " to ", roib.getName()
+			#print "link", roia.getName(), " to ", roib.getName()
+			liens.append((roia,roib))
 			rm.addRoi(roib)
+			findlost.append(RoisB.index(roib))
 			
 		else :
 			intersectlist=[]
@@ -105,29 +113,41 @@ def link(RoisA, RoisB, RoisProj) :
 			if len(intersectlist)>1 : 
 				key=max(tempdict.keys())
 				rm.addRoi(tempdict[key])
-				print "*****************"
-				print "link", roia.getName(), " to ", tempdict[key].getName()
+				#print "*****************"
+				#print "link", roia.getName(), " to ", tempdict[key].getName()
+				liens.append((roia,tempdict[key]))
+				findlost.append(RoisB.index(tempdict[key]))
 				
 			elif len(intersectlist)==1 :
 				rm.addRoi(intersectlist[0])
-				print "*****************"
-				print "link", roia.getName(), " to ", intersectlist[0].getName()
+				#print "*****************"
+				#print "link", roia.getName(), " to ", intersectlist[0].getName()
+				liens.append((roia,intersectlist[0]))
+				findlost.append(RoisB.index(intersectlist[0]))
 			
 			else :
 				if len(noninterlist)>1 :
 					print "pass plusieurs cibles", roia.getName()
 				elif len(noninterlist) == 1 :
 					rm.addRoi(noninterlist[0])
-					print "*****************"
-					print "link", roia.getName(), " to ", noninterlist[0].getName()
+					#print "*****************"
+					#print "link", roia.getName(), " to ", noninterlist[0].getName()
+					liens.append((roia,noninterlist[0]))
+					findlost.append(RoisB.index(noninterlist[0]))
 				else :
 					print "jamais ici", roia.getName()
 
+	setfound = set(findlost)
+	settot = set(range(len(RoisB)))
+	setnew =  settot.difference(setfound)
+
+	for i in setnew : new.append(("NEW",RoisB[i]))
 	
 	#return (liens,new,lost)
+	return (liens, new, lost)
 	
 if __name__ == "__main__":
-	print "start"
+	
 	rm = RoiManager.getInstance()
 	if (rm==None): rm = RoiManager()
 	dir = str(os.path.expanduser(os.path.join("~","Dropbox","MacrosDropBox","py","MorphoBact2", "testmasks","")))
@@ -145,7 +165,27 @@ if __name__ == "__main__":
 	roisb = rm.getRoisAsArray()
 	rm.runCommand("reset")
 	
-	link(roisa, roisb, roisz)
+	links = link(roisa, roisb, roisz)
+	liens = links[0]
+	new = links[1]
+	lost = links[2]
+
+	rm.runCommand("reset")
+	#for l in liens :
+	#	rm.addRoi(l[0])
+	#	rm.addRoi(l[1])
+
+	rm.runCommand("reset")
+	for l in new :
+		rm.addRoi(l[1])
+
+	rm.runCommand("reset")
+	for l in lost :
+		rm.addRoi(l[1])
+	
+
+	
+
 	
 	
 	

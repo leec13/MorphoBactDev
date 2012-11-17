@@ -30,7 +30,7 @@ codecs.setDefaultEncoding('utf-8')
 
 from MorphoBact import Morph
 from BacteriaCell import Bacteria_Cell
-from LinkRoisAB import link
+
 from RangeRois import RangeRois
 from BacteriaTracking import Bacteria_Tracking
 from CreateListfiles import createListfiles
