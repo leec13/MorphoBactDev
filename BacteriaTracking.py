@@ -37,8 +37,8 @@ codecs.setDefaultEncoding('utf-8')
 
 from MorphoBact import Morph
 from BacteriaCell import Bacteria_Cell
-from LinkRoisAB import link
-from LinkRoisABoriented import link as link2
+#from LinkRoisAB import link
+import LinkRoisABoriented
 from RangeRois import RangeRois
 
 class Bacteria_Tracking(object) :
@@ -329,11 +329,19 @@ class Bacteria_Tracking(object) :
 			rm.runCommand("reset")
 			rm.runCommand("Open", dir+"zones.zip")
 			roisz = rm.getRoisAsArray()
-			outlink2 = link2(RoisA, RoisB, roisz)
+			outlink2 = LinkRoisABoriented.link(RoisA, RoisB, roisz)
 
 			liens=outlink2[0]
 		 	news=outlink2[1]
 		 	losts=outlink2[2]
+
+			LinkRoisABoriented.delta = -0.2
+			LinkRoisABoriented.imp = imp
+			LinkRoisABoriented.attribute = "Area"
+
+			sortedliens = LinkRoisABoriented.sortLiens(liens, losts)
+			liens = sortedliens[0]
+			losts = sortedliens[1]
 
 			rm.runCommand("reset")
 

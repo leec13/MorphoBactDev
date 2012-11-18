@@ -29,6 +29,10 @@ codecs.setDefaultEncoding('utf-8')
 from MorphoBact import Morph
 import Boolean_Rois
 
+imp = IJ.getImage()
+delta=100.00
+attribute = "Area"
+
 def initDict(Rois, Zones) :
 	dictRois={}
 	dictRois.clear()
@@ -66,8 +70,8 @@ def link(RoisA, RoisB, RoisProj) :
 	# attribuer a chaque RoiA une zone de la projection dans un dictionaire
 
 
-	for r in RoisA : print "A", r.getName()
-	for r in RoisB : print "B", r.getName()
+	#for r in RoisA : print "A", r.getName()
+	#for r in RoisB : print "B", r.getName()
 	
 	dictZonesA={}
 	dictZonesB={}
@@ -166,13 +170,27 @@ def link(RoisA, RoisB, RoisProj) :
 				break
 		if marqueurtemp == False :
 			new.append(("NEW",roisB))
-			#print "new ", roisB.getName()
 
-
-	#for l in liens : print "a-", l[0].getName(), "b-", l[1].getName()
-	
-	#return (liens,new,lost)
 	return (liens, new, lost)
+	
+	# selection des cellules comprises dans le criteres acceptables
+
+def sortLiens(liens, losts) :
+	for l in liens :
+		roia, roib =l[0], l[1]
+		ma, mb = Morph(imp, roia), Morph(imp, roib)
+		measurea = ma.__getattribute__(attribute)
+		measureb = mb.__getattribute__(attribute)
+		if (measurea-measureb)/measurea < delta*(-1) and delta > 0 :
+			losts.append(("LOST", l[0]))
+			liens.remove(l)
+		elif (measurea-measureb)/measurea > delta*(-1) and delta < 0 :
+			losts.append(("LOST", l[0]))
+			liens.remove(l)
+		else : continue	
+
+	return (liens, losts)
+			
 	
 if __name__ == "__main__":
 	
