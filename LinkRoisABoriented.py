@@ -64,6 +64,10 @@ def link(RoisA, RoisB, RoisProj) :
 	"""	
 
 	# attribuer a chaque RoiA une zone de la projection dans un dictionaire
+
+
+	for r in RoisA : print "A", r.getName()
+	for r in RoisB : print "B", r.getName()
 	
 	dictZonesA={}
 	dictZonesB={}
@@ -145,7 +149,9 @@ def link(RoisA, RoisB, RoisProj) :
 	settot = set(range(len(RoisB)))
 	setnew =  settot.difference(setfound)
 
-	for i in setnew : new.append(("NEW",RoisB[i]))
+	#for i in setnew : new.append(("NEW",RoisB[i]))
+
+	for l in liens : print "a-", l[0].getName(), "b-", l[1].getName()
 	
 	#return (liens,new,lost)
 	return (liens, new, lost)

@@ -542,7 +542,6 @@ class Bacteria_Tracking(object) :
 				else :
 					s = "%04i" % (numslice+1)
 					#name=s+"-"+name.split("-", 1)[1]
-					print name
 					name=s+"-cell"+name.split("cell")[1]
 					r.setName(name)
 					try :
