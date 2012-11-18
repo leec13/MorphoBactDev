@@ -58,6 +58,8 @@ class Bacteria_Tracking(object) :
 
 	
 	def __init__(self):
+
+		print "ok path dropbox/MeasureCells2"
 		
 		# Sets the number of digits.
 		self.__nbdigits=3
@@ -74,7 +76,7 @@ class Bacteria_Tracking(object) :
 		self.__dict={}
 
 		# List of the parameters chosen by the user in order to calculate the distance.
-		self.__distparam=[]
+		#self.__distparam=[]
 
 		# List of the parameters chosen by the user in order to find the particules in the stack.
 		self.__params=[]
@@ -116,18 +118,18 @@ class Bacteria_Tracking(object) :
 	#def run(self, files=IJ.getImage(), **settings):
 	def run(self, files, path, scale, batch, **settings):
 
-		self.__distparam.append(1)		#AREA_COEFF
+		#self.__distparam.append(1)		#AREA_COEFF
 		#self.__distparam.append(1500/scale)	#AREA_MAXDELTA
-		self.__distparam.append(2)		#AREA_MAXDELTA
-		self.__distparam.append(5)		#ANGLE_COEFF
-		self.__distparam.append(180)		#ANGLE_MAXDELTA
-		self.__distparam.append(1)		#FERETMAX_COEFF
+		#self.__distparam.append(2)		#AREA_MAXDELTA
+		#self.__distparam.append(5)		#ANGLE_COEFF
+		#self.__distparam.append(180)		#ANGLE_MAXDELTA
+		#self.__distparam.append(1)		#FERETMAX_COEFF
 		#self.__distparam.append(150/scale)	#FERETMAX_MAXDELTA
-		self.__distparam.append(2)		#FERETMAX_MAXDELTA
-		self.__distparam.append(10)		#POSITIONX_COEFF
-		self.__distparam.append(20/scale)	#POSITIONX_MAXDELTA
-		self.__distparam.append(10)		#POSITIONY_COEFF
-		self.__distparam.append(20/scale)	#POSITIONY_MAXDELTA
+		#self.__distparam.append(2)		#FERETMAX_MAXDELTA
+		#self.__distparam.append(10)		#POSITIONX_COEFF
+		#self.__distparam.append(20/scale)	#POSITIONX_MAXDELTA
+		#self.__distparam.append(10)		#POSITIONY_COEFF
+		#self.__distparam.append(20/scale)	#POSITIONY_MAXDELTA
 		
 		self.__timelapse=600			#time lapse
 		self.__radius=int(50/scale)
@@ -181,7 +183,7 @@ class Bacteria_Tracking(object) :
 				self.__displayCells(name, False)
 		else: 
 			self.__params=list(settings["params"])
-			self.__distparam=list(settings["distparam"])
+			#self.__distparam=list(settings["distparam"])
 			self.__distmethod=settings["distmethod"]
 			self.__subback=settings["subback"]
 			self.__radius=settings["radius"]
@@ -316,7 +318,7 @@ class Bacteria_Tracking(object) :
 			RoisA=[cellule.getRoi(i-2) for cellule in self.__dict[imgName].values() if isinstance(cellule.getRoi(i-2),Roi) ]
 		 	RoisB = self.__calRois(imp,i)
 		 	# link returns 3 lists of tuples : one of rois that correspond, one of new rois at a given slide, and one of lost rois at a given slide.
-		 	outlink = link(imp, i-1, i, RoisA,RoisB, self.__distparam, self.__distmethod, self.__optionAngle, self.__nbdigits, self.__optionNewCells)
+		 	#outlink = link(imp, i-1, i, RoisA,RoisB, self.__distparam, self.__distmethod, self.__optionAngle, self.__nbdigits, self.__optionNewCells)
 		 	#liens=outlink[0]
 		 	#news=outlink[1]
 		 	#losts=outlink[2]
@@ -540,6 +542,7 @@ class Bacteria_Tracking(object) :
 				else :
 					s = "%04i" % (numslice+1)
 					#name=s+"-"+name.split("-", 1)[1]
+					print name
 					name=s+"-cell"+name.split("cell")[1]
 					r.setName(name)
 					try :
@@ -637,21 +640,21 @@ class Bacteria_Tracking(object) :
 			gd0.addCheckbox("Run a macro for pre processing",self.__runmacro)		#box 2 runmacro
 			gd0.addPanel(panel0)
 			gd0.addMessage("-------------------------------------------")
-			gd0.addMessage("Tracking parameters")
-			gd0.addMessage("Coeffs modulate de weight of each parameter")
-			gd0.addMessage("Max delta set the maximum allowed change in absolute units")
-			gd0.addMessage(" ")
-			gd0.addNumericField("Coeff Area   : ",self.__distparam[0],0)
-			gd0.addNumericField("Max deltaArea   : ",self.__distparam[1],self.__nbdigits,6,"x times")
-			gd0.addNumericField("Coeff Angle   : ",self.__distparam[2],0)
-			gd0.addNumericField("Max deltaAngle   : ",self.__distparam[3],self.__nbdigits,6,"degrees")
-			gd0.addNumericField("Coeff Feret   : ",self.__distparam[4],0)
-			gd0.addNumericField("Max deltaFeret   : ",self.__distparam[5],self.__nbdigits,6,"x times")
-			gd0.addNumericField("Coeff PositionX   : ",self.__distparam[6],0)
-			gd0.addNumericField("Max deltaPositionX   : ",self.__distparam[7],self.__nbdigits,6,"pixels")
-			gd0.addNumericField("Coeff PositionY   : ",self.__distparam[8],0)
-			gd0.addNumericField("Max deltaPositionY   : ",self.__distparam[9],self.__nbdigits,6,"pixels")
-			gd0.addMessage("-------------------------------------------")
+			#gd0.addMessage("Tracking parameters")
+			#gd0.addMessage("Coeffs modulate de weight of each parameter")
+			#gd0.addMessage("Max delta set the maximum allowed change in absolute units")
+			#gd0.addMessage(" ")
+			#gd0.addNumericField("Coeff Area   : ",self.__distparam[0],0)
+			#gd0.addNumericField("Max deltaArea   : ",self.__distparam[1],self.__nbdigits,6,"x times")
+			#gd0.addNumericField("Coeff Angle   : ",self.__distparam[2],0)
+			#gd0.addNumericField("Max deltaAngle   : ",self.__distparam[3],self.__nbdigits,6,"degrees")
+			#gd0.addNumericField("Coeff Feret   : ",self.__distparam[4],0)
+			#gd0.addNumericField("Max deltaFeret   : ",self.__distparam[5],self.__nbdigits,6,"x times")
+			#gd0.addNumericField("Coeff PositionX   : ",self.__distparam[6],0)
+			#gd0.addNumericField("Max deltaPositionX   : ",self.__distparam[7],self.__nbdigits,6,"pixels")
+			#gd0.addNumericField("Coeff PositionY   : ",self.__distparam[8],0)
+			#gd0.addNumericField("Max deltaPositionY   : ",self.__distparam[9],self.__nbdigits,6,"pixels")
+			#gd0.addMessage("-------------------------------------------")
 			automethods=AutoThresholder.getMethods()
 			gd0.addCheckbox("Manual Threshold",self.__manthresh)		#box 3 manthresh
 			gd0.addChoice("Threshol Method : ",automethods,self.__thresMethod)
@@ -674,7 +677,7 @@ class Bacteria_Tracking(object) :
 			self.__subback=gd0.getNextBoolean()				#box 1 subback
 			self.__radius=gd0.getNextNumber()
 			self.__runmacro=gd0.getNextBoolean()				#box 2 runmacro
-			for i in range(10) : self.__distparam[i]=gd0.getNextNumber()
+			#for i in range(10) : self.__distparam[i]=gd0.getNextNumber()
 			#self.__distmethod=gd0.getNextChoice()
 			self.__manthresh=gd0.getNextBoolean()				#box 3 manthresh
 			self.__thresMethod=gd0.getNextChoice()
@@ -745,16 +748,16 @@ class Bacteria_Tracking(object) :
 		
 		fichier.write("SUBBACK="+str(self.__subback)+"\n")
 		fichier.write("SUBBACKRADIUS="+str(self.__radius)+"\n")
-		fichier.write("DISTPARAM_AREA_COEFF="+str(self.__distparam[0])+"\n")
-		fichier.write("DISTPARAM_AREA_MAXDELTA="+str(self.__distparam[1])+"\n")
-		fichier.write("DISTPARAM_ANGLE_COEFF="+str(self.__distparam[2])+"\n")
-		fichier.write("DISTPARAM_ANGLE_MAXDELTA="+str(self.__distparam[3])+"\n")
-		fichier.write("DISTPARAM_FERETMAX_COEFF="+str(self.__distparam[4])+"\n")
-		fichier.write("DISTPARAM_FERETMAX_MAXDELTA="+str(self.__distparam[5])+"\n")
-		fichier.write("DISTPARAM_POSITIONX_COEFF="+str(self.__distparam[6])+"\n")
-		fichier.write("DISTPARAM_POSITIONX_MAXDELTA="+str(self.__distparam[7])+"\n")
-		fichier.write("DISTPARAM_POSITIONY_COEFF="+str(self.__distparam[8])+"\n")
-		fichier.write("DISTPARAM_POSITIONY_MAXDELTA="+str(self.__distparam[9])+"\n")
+		#fichier.write("DISTPARAM_AREA_COEFF="+str(self.__distparam[0])+"\n")
+		#fichier.write("DISTPARAM_AREA_MAXDELTA="+str(self.__distparam[1])+"\n")
+		#fichier.write("DISTPARAM_ANGLE_COEFF="+str(self.__distparam[2])+"\n")
+		#fichier.write("DISTPARAM_ANGLE_MAXDELTA="+str(self.__distparam[3])+"\n")
+		#fichier.write("DISTPARAM_FERETMAX_COEFF="+str(self.__distparam[4])+"\n")
+		#fichier.write("DISTPARAM_FERETMAX_MAXDELTA="+str(self.__distparam[5])+"\n")
+		#fichier.write("DISTPARAM_POSITIONX_COEFF="+str(self.__distparam[6])+"\n")
+		#fichier.write("DISTPARAM_POSITIONX_MAXDELTA="+str(self.__distparam[7])+"\n")
+		#fichier.write("DISTPARAM_POSITIONY_COEFF="+str(self.__distparam[8])+"\n")
+		#fichier.write("DISTPARAM_POSITIONY_MAXDELTA="+str(self.__distparam[9])+"\n")
 		fichier.write("DISTMETHOD="+self.__distmethod+"\n")
 		fichier.write("OPTIONMANTHRESH="+str(self.__manthresh)+"\n")
 		fichier.write("THRESHMETHOD="+str(self.__thresMethod)+"\n")
@@ -795,16 +798,16 @@ class Bacteria_Tracking(object) :
 				val=params[1].split("\n")
 				if params[0]=="SUBBACK" : self.__subback=bool(int(val[0]))
 				if params[0]=="SUBBACKRADIUS" : self.__radius=Double(val[0])
-				if params[0]=="DISTPARAM_AREA_COEFF" : self.__distparam[0]=int(val[0])
-				if params[0]=="DISTPARAM_AREA_MAXDELTA" : self.__distparam[1]=Double(val[0])
-				if params[0]=="DISTPARAM_ANGLE_COEFF" : self.__distparam[2]=int(val[0])
-				if params[0]=="DISTPARAM_ANGLE_MAXDELTA" : self.__distparam[3]=Double(val[0])
-				if params[0]=="DISTPARAM_FERETMAX_COEFF" : self.__distparam[4]=int(val[0])
-				if params[0]=="DISTPARAM_FERETMAX_MAXDELTA" : self.__distparam[5]=Double(val[0])
-				if params[0]=="DISTPARAM_POSITIONX_COEFF" : self.__distparam[6]=int(val[0])
-				if params[0]=="DISTPARAM_POSITIONX_MAXDELTA" : self.__distparam[7]=int(val[0])
-				if params[0]=="DISTPARAM_POSITIONY_COEFF" : self.__distparam[8]=int(val[0])
-				if params[0]=="DISTPARAM_POSITIONY_MAXDELTA" : self.__distparam[9]=int(val[0])
+				#if params[0]=="DISTPARAM_AREA_COEFF" : self.__distparam[0]=int(val[0])
+				#if params[0]=="DISTPARAM_AREA_MAXDELTA" : self.__distparam[1]=Double(val[0])
+				#if params[0]=="DISTPARAM_ANGLE_COEFF" : self.__distparam[2]=int(val[0])
+				#if params[0]=="DISTPARAM_ANGLE_MAXDELTA" : self.__distparam[3]=Double(val[0])
+				#if params[0]=="DISTPARAM_FERETMAX_COEFF" : self.__distparam[4]=int(val[0])
+				#if params[0]=="DISTPARAM_FERETMAX_MAXDELTA" : self.__distparam[5]=Double(val[0])
+				#if params[0]=="DISTPARAM_POSITIONX_COEFF" : self.__distparam[6]=int(val[0])
+				#if params[0]=="DISTPARAM_POSITIONX_MAXDELTA" : self.__distparam[7]=int(val[0])
+				#if params[0]=="DISTPARAM_POSITIONY_COEFF" : self.__distparam[8]=int(val[0])
+				#if params[0]=="DISTPARAM_POSITIONY_MAXDELTA" : self.__distparam[9]=int(val[0])
 				if params[0]=="DISTMETHOD" : self.__distmethod=str(val[0])
 				if params[0]=="OPTIONMANTHRESH" : self.__manthresh=bool(int(val[0]))
 				if params[0]=="THRESHMETHOD" : self.__thresMethod=str(val[0])

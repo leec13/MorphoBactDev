@@ -9,6 +9,10 @@ import math
 
 from ij import IJ
 from ij.gui import Roi, ShapeRoi
+from ij.plugin.frame import RoiManager
+from ij import ImageStack, ImagePlus, WindowManager
+from ij.gui import Roi, NonBlockingGenericDialog, Overlay
+from ij.process import ImageProcessor
 
 
 from java.lang import Double,Boolean
