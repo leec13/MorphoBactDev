@@ -103,8 +103,8 @@ def link(RoisA, RoisB, RoisProj) :
 			#print "link", roia.getName(), " to ", roib.getName()
 			liens.append((roia,roib))
 			rm.addRoi(roib)
-			findlost.append(RoisB.index(roib))
-			
+			#findlost.append(RoisB.index(roib))
+			continue
 		else :
 			intersectlist=[]
 			noninterlist=[]
@@ -124,34 +124,52 @@ def link(RoisA, RoisB, RoisProj) :
 				#print "*****************"
 				#print "link", roia.getName(), " to ", tempdict[key].getName()
 				liens.append((roia,tempdict[key]))
-				findlost.append(RoisB.index(tempdict[key]))
+				#findlost.append(RoisB.index(tempdict[key]))
+				roiszone.remove(tempdict[key])
+				continue
 				
 			elif len(intersectlist)==1 :
 				rm.addRoi(intersectlist[0])
 				#print "*****************"
 				#print "link", roia.getName(), " to ", intersectlist[0].getName()
 				liens.append((roia,intersectlist[0]))
-				findlost.append(RoisB.index(intersectlist[0]))
+				#findlost.append(RoisB.index(intersectlist[0]))
+				roiszone.remove(intersectlist[0])
+				continue
 			
 			else :
 				if len(noninterlist)>1 :
 					print "pass plusieurs cibles", roia.getName()
+					liens.append((roia,noninterlist[0]))
+					RoisB.remove(noninterlist[0])
 				elif len(noninterlist) == 1 :
 					rm.addRoi(noninterlist[0])
 					#print "*****************"
 					#print "link", roia.getName(), " to ", noninterlist[0].getName()
 					liens.append((roia,noninterlist[0]))
-					findlost.append(RoisB.index(noninterlist[0]))
+					#findlost.append(RoisB.index(noninterlist[0]))
+					
 				else :
 					print "jamais ici", roia.getName()
 
-	setfound = set(findlost)
-	settot = set(range(len(RoisB)))
-	setnew =  settot.difference(setfound)
+	#setfound = set(findlost)
+	#settot = set(range(len(RoisB)))
+	#setnew =  settot.difference(setfound)
 
 	#for i in setnew : new.append(("NEW",RoisB[i]))
 
-	for l in liens : print "a-", l[0].getName(), "b-", l[1].getName()
+	for roisB in RoisB	:
+		marqueurtemp = False
+		for lien in liens :
+			if lien[1] == roisB :
+				marqueurtemp = True
+				break
+		if marqueurtemp == False :
+			new.append(("NEW",roisB))
+			#print "new ", roisB.getName()
+
+
+	#for l in liens : print "a-", l[0].getName(), "b-", l[1].getName()
 	
 	#return (liens,new,lost)
 	return (liens, new, lost)
