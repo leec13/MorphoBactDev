@@ -28,7 +28,7 @@ def inter(roia, roib) :
 	shapeA = ShapeRoi(roia)
 	shapeB = ShapeRoi(roib)
 	intersect = shapeB.and(shapeA).shapeToRoi()
-	if intersect.isArea() and intersect.getType()>0 :
+	if intersect != None and intersect.isArea() and intersect.getType()>0 :
 		mask=intersect.getMask()
 		pixels = mask.getIntArray()
 		area = sum([sum(v) for v in pixels])/255

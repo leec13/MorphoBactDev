@@ -94,75 +94,83 @@ def link(RoisA, RoisB, RoisProj) :
 	img=IJ.getImage()
 	maxArea = img.getWidth()*img.getHeight()
 	
-	for roia in RoisA : 
-		zone = dictRoisA[roia][1]
-		roiszone = dictZonesB[zone][1]
-		if len(roiszone)==0 :
-			#print "*****************"
-			#print roia.getName(),"LOST"
-			lost.append(("LOST",roia))
-		elif len(roiszone)==1 : 
-			#print "*****************"
-			roib = roiszone.pop()
-			#print "link", roia.getName(), " to ", roib.getName()
-			liens.append((roia,roib))
-			#rm.addRoi(roib)
-			#findlost.append(RoisB.index(roib))
-			continue
-		else :
-			intersectlist=[]
-			noninterlist=[]
-			tempdict={}
-			for roib in roiszone :
-				intersect = Boolean_Rois.inter(roia, roib)
-				if intersect[1] > 0 :
-					intersectlist.append(roib)
-					tempdict[intersect[1]]=roib
-					
-				else : 
-					noninterlist.append(roib)
-			
-			if len(intersectlist)>1 : 
-				key=max(tempdict.keys())
-				#rm.addRoi(tempdict[key])
+	for roia in RoisA :
+		if roia in dictRoisA.keys() :
+			zone = dictRoisA[roia][1]
+			roiszone = dictZonesB[zone][1]
+			if len(roiszone)==0 :
 				#print "*****************"
-				#print "link", roia.getName(), " to ", tempdict[key].getName()
-				liens.append((roia,tempdict[key]))
-				#findlost.append(RoisB.index(tempdict[key]))
-				roiszone.remove(tempdict[key])
-				continue
-				
-			elif len(intersectlist)==1 :
-				#rm.addRoi(intersectlist[0])
+				#print roia.getName(),"LOST"
+				lost.append(("LOST",roia))
+			elif len(roiszone)==1 : 
 				#print "*****************"
-				#print "link", roia.getName(), " to ", intersectlist[0].getName()
-				liens.append((roia,intersectlist[0]))
-				#findlost.append(RoisB.index(intersectlist[0]))
-				roiszone.remove(intersectlist[0])
+				roib = roiszone.pop()
+				#print "link", roia.getName(), " to ", roib.getName()
+				liens.append((roia,roib))
+				#rm.addRoi(roib)
+				#findlost.append(RoisB.index(roib))
 				continue
-			
 			else :
-				if len(noninterlist)>1 :
-					# PAS IMPLEMENTE
-					print "pass plusieurs cibles", roia.getName()
-					liens.append((roia,noninterlist[0]))
-					roiszone.remove(noninterlist[0])
-				elif len(noninterlist) == 1 :
-					#rm.addRoi(noninterlist[0])
-					#print "*****************"
-					#print "link", roia.getName(), " to ", noninterlist[0].getName()
-					liens.append((roia,noninterlist[0]))
-					roiszone.remove(noninterlist[0])
-					#findlost.append(RoisB.index(noninterlist[0]))
+				intersectlist=[]
+				noninterlist=[]
+				tempdict={}
+				for roib in roiszone :
+					intersect = Boolean_Rois.inter(roia, roib)
+					if intersect[1] > 0 :
+						intersectlist.append(roib)
+						tempdict[intersect[1]]=roib
 					
+					else : 
+						noninterlist.append(roib)
+			
+				if len(intersectlist)>1 : 
+					key=max(tempdict.keys())
+					#rm.addRoi(tempdict[key])
+					#print "*****************"
+					#print "link", roia.getName(), " to ", tempdict[key].getName()
+					liens.append((roia,tempdict[key]))
+					#findlost.append(RoisB.index(tempdict[key]))
+					roiszone.remove(tempdict[key])
+					continue
+				
+				elif len(intersectlist)==1 :
+					#rm.addRoi(intersectlist[0])
+					#print "*****************"
+					#print "link", roia.getName(), " to ", intersectlist[0].getName()
+					liens.append((roia,intersectlist[0]))
+					#findlost.append(RoisB.index(intersectlist[0]))
+					roiszone.remove(intersectlist[0])
+					continue
+			
 				else :
-					print "jamais ici", roia.getName()
+					if len(noninterlist)>1 :
+						ma = Morph(imp, roia)
+						maxdist=10000
+						print "-----"
+						for cible in noninterlist :
+							mb = Morph(imp, cible)
+							val = [(1,ma.XC,mb.XC), (1,ma.YC,mb.YC)]
+							d = Morph.distMorph(val)
+							print d
+							if d < maxdist : 
+								candidate = cible
+								maxdist = d
+							
+						liens.append((roia,candidate))
+						print "plusieurs cibles, link ", roia.getName(), "-", candidate.getName()
+						roiszone.remove(candidate)
+						continue
+					elif len(noninterlist) == 1 :
+						#rm.addRoi(noninterlist[0])
+						#print "*****************"
+						#print "link", roia.getName(), " to ", noninterlist[0].getName()
+						liens.append((roia,noninterlist[0]))
+						roiszone.remove(noninterlist[0])
+						#findlost.append(RoisB.index(noninterlist[0]))
+					
+					else :
+						print "jamais ici", roia.getName()
 
-	#setfound = set(findlost)
-	#settot = set(range(len(RoisB)))
-	#setnew =  settot.difference(setfound)
-
-	#for i in setnew : new.append(("NEW",RoisB[i]))
 
 	for roisB in RoisB	:
 		marqueurtemp = False

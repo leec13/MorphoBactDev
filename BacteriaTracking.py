@@ -343,6 +343,14 @@ class Bacteria_Tracking(object) :
 			liens = sortedliens[0]
 			losts = sortedliens[1]
 
+			LinkRoisABoriented.delta = 0.2
+			LinkRoisABoriented.imp = imp
+			LinkRoisABoriented.attribute = "Area"
+
+			sortedliens = LinkRoisABoriented.sortLiens(liens, losts)
+			liens = sortedliens[0]
+			losts = sortedliens[1]
+
 			rm.runCommand("reset")
 
 			# we update the tab of rois for the cells for which we found a new ROI in another slide.
