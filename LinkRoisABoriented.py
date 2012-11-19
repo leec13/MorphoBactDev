@@ -106,7 +106,7 @@ def link(RoisA, RoisB, RoisProj) :
 			roib = roiszone.pop()
 			#print "link", roia.getName(), " to ", roib.getName()
 			liens.append((roia,roib))
-			rm.addRoi(roib)
+			#rm.addRoi(roib)
 			#findlost.append(RoisB.index(roib))
 			continue
 		else :
@@ -124,7 +124,7 @@ def link(RoisA, RoisB, RoisProj) :
 			
 			if len(intersectlist)>1 : 
 				key=max(tempdict.keys())
-				rm.addRoi(tempdict[key])
+				#rm.addRoi(tempdict[key])
 				#print "*****************"
 				#print "link", roia.getName(), " to ", tempdict[key].getName()
 				liens.append((roia,tempdict[key]))
@@ -133,7 +133,7 @@ def link(RoisA, RoisB, RoisProj) :
 				continue
 				
 			elif len(intersectlist)==1 :
-				rm.addRoi(intersectlist[0])
+				#rm.addRoi(intersectlist[0])
 				#print "*****************"
 				#print "link", roia.getName(), " to ", intersectlist[0].getName()
 				liens.append((roia,intersectlist[0]))
@@ -143,14 +143,16 @@ def link(RoisA, RoisB, RoisProj) :
 			
 			else :
 				if len(noninterlist)>1 :
+					# PAS IMPLEMENTE
 					print "pass plusieurs cibles", roia.getName()
 					liens.append((roia,noninterlist[0]))
-					RoisB.remove(noninterlist[0])
+					roiszone.remove(noninterlist[0])
 				elif len(noninterlist) == 1 :
-					rm.addRoi(noninterlist[0])
+					#rm.addRoi(noninterlist[0])
 					#print "*****************"
 					#print "link", roia.getName(), " to ", noninterlist[0].getName()
 					liens.append((roia,noninterlist[0]))
+					roiszone.remove(noninterlist[0])
 					#findlost.append(RoisB.index(noninterlist[0]))
 					
 				else :
