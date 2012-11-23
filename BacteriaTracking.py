@@ -95,7 +95,7 @@ class Bacteria_Tracking(object) :
 		self.__minCirc=0.00
 		self.__maxCirc=1.00
 
-		self.__thresMethod="MaxEntropy"
+		self.__thresMethod="Default"
 		self.__manthresh=False
 		self.__maxthr=255
 		self.__minthr=0
@@ -670,6 +670,7 @@ class Bacteria_Tracking(object) :
 			#gd0.addNumericField("Coeff PositionY   : ",self.__distparam[8],0)
 			#gd0.addNumericField("Max deltaPositionY   : ",self.__distparam[9],self.__nbdigits,6,"pixels")
 			#gd0.addMessage("-------------------------------------------")
+			gd0.addChoice("Tracking strategy : ",["chemin commun","distance minimum"],"chemin commun")
 			automethods=AutoThresholder.getMethods()
 			gd0.addCheckbox("Manual Threshold",self.__manthresh)		#box 3 manthresh
 			gd0.addChoice("Threshol Method : ",automethods,self.__thresMethod)
@@ -694,6 +695,7 @@ class Bacteria_Tracking(object) :
 			self.__runmacro=gd0.getNextBoolean()				#box 2 runmacro
 			#for i in range(10) : self.__distparam[i]=gd0.getNextNumber()
 			#self.__distmethod=gd0.getNextChoice()
+			trackingstrat = gd0.getNextChoice()					# tracking strategy
 			self.__manthresh=gd0.getNextBoolean()				#box 3 manthresh
 			self.__thresMethod=gd0.getNextChoice()
 			#self.__optionAngle=gd0.getNextBoolean()
@@ -703,6 +705,10 @@ class Bacteria_Tracking(object) :
 			self.__timelapse=int(gd0.getNextNumber())
 			
 		# -------- start end batch mode --------- # 
+		
+			if trackingstrat=="chemin commun" :
+				trackparams = OptionsDialog.settingsWindow()
+			
 		
 		if self.__optionTimelapse :
 			self.__dictTimeStack[imgName]=range(0,image.getImageStackSize()*self.__timelapse, self.__timelapse)
