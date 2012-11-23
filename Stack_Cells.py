@@ -997,6 +997,10 @@ class StackCells(swing.JFrame):
 			ymKurt = mm04 / (m00 * math.pow(yymVar,2.0)) - 3.0
 
 			ecm = (math.pow((mm20-mm02),2.0)+(4.0*mm11*mm11))/m00
+			
+			xxcVh = (rect.width*rect.width+3*rect.width+2)/12
+			
+			yycVh = (rect.height*rect.height+3*rect.height+2)/12
 
 			rt.addValue("xxcVar", xxcVar)
 			rt.addValue("yycVar", yycVar)
@@ -1027,6 +1031,9 @@ class StackCells(swing.JFrame):
 
 			rt.addValue("cellw", self.__ipw[index-1])
 			rt.addValue("cellh", self.__iph[index-1])
+			
+			rt.addValue("xxcVh", xxcVh)
+			rt.addValue("yycVh", xxcVh)
 
 			self.__impRes.killRoi()
 
