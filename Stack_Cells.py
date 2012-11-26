@@ -119,7 +119,7 @@ class StackCells(swing.JFrame):
 		label.setText("Fluo threshold ?")
 		northpanel2.add(label)
 		self.__display4 = swing.JTextField(preferredSize=(50, 30), horizontalAlignment=swing.SwingConstants.LEFT)
-		self.__display4.text = "170"
+		self.__display4.text = "1"
 		northpanel2.add(self.__display4)
 		
 		#northpanel3=swing.JPanel(awt.FlowLayout(awt.FlowLayout.LEFT))
@@ -129,7 +129,7 @@ class StackCells(swing.JFrame):
 		label.setText("Min of length ?")
 		northpanel2.add(label)
 		self.__display5 = swing.JTextField(preferredSize=(50, 30), horizontalAlignment=swing.SwingConstants.LEFT)
-		self.__display5.text = "50"
+		self.__display5.text = "5"
 		northpanel2.add(self.__display5)
 
 		label=swing.JLabel("Label6")
@@ -219,7 +219,7 @@ class StackCells(swing.JFrame):
 		checkpanel.add(self.__box10)
 		
 		grid = awt.GridLayout()
-		grid.setRows(10)
+		grid.setRows(12)
 		checkpanel2=swing.JPanel(grid)
 		checkpanel2.setBorder(line)
 
@@ -334,7 +334,62 @@ class StackCells(swing.JFrame):
 		self.__display22 = swing.JTextField(preferredSize=(50, 30), horizontalAlignment=swing.SwingConstants.LEFT)
 		self.__display22.text = "1"
 		checkpanel2.add(self.__display22)
-		
+
+		label=swing.JLabel("Label23")
+		label.setText("Nombre de segments")
+		checkpanel2.add(label)
+		self.__display23 = swing.JTextField(preferredSize=(50, 30), horizontalAlignment=swing.SwingConstants.LEFT)
+		self.__display23.text = "10"
+		checkpanel2.add(self.__display23)
+
+		label=swing.JLabel("Label24")
+		label.setText("N min de segments")
+		checkpanel2.add(label)
+		self.__display24 = swing.JTextField(preferredSize=(50, 30), horizontalAlignment=swing.SwingConstants.LEFT)
+		self.__display24.text = "4"
+		checkpanel2.add(self.__display24)
+
+		label=swing.JLabel("Label25")
+		label.setText("radius for segs")
+		checkpanel2.add(label)
+		self.__display25 = swing.JTextField(preferredSize=(50, 30), horizontalAlignment=swing.SwingConstants.LEFT)
+		self.__display25.text = "20"
+		checkpanel2.add(self.__display25)
+
+		label=swing.JLabel("Label26")
+		label.setText("max diff major")
+		checkpanel2.add(label)
+		self.__display26 = swing.JTextField(preferredSize=(50, 30), horizontalAlignment=swing.SwingConstants.LEFT)
+		self.__display26.text = "0.2"
+		checkpanel2.add(self.__display26)
+
+		label=swing.JLabel("Label27")
+		label.setText("max diff feret")
+		checkpanel2.add(label)
+		self.__display27 = swing.JTextField(preferredSize=(50, 30), horizontalAlignment=swing.SwingConstants.LEFT)
+		self.__display27.text = "0.2"
+		checkpanel2.add(self.__display27)
+
+		label=swing.JLabel("Label28")
+		label.setText("max diff area")
+		checkpanel2.add(label)
+		self.__display28 = swing.JTextField(preferredSize=(50, 30), horizontalAlignment=swing.SwingConstants.LEFT)
+		self.__display28.text = "0.2"
+		checkpanel2.add(self.__display28)
+
+		label=swing.JLabel("Label29")
+		label.setText("min width")
+		checkpanel2.add(label)
+		self.__display29 = swing.JTextField(preferredSize=(50, 30), horizontalAlignment=swing.SwingConstants.LEFT)
+		self.__display29.text = "10"
+		checkpanel2.add(self.__display29)
+
+		label=swing.JLabel("Label30")
+		label.setText("max width")
+		checkpanel2.add(label)
+		self.__display30 = swing.JTextField(preferredSize=(50, 30), horizontalAlignment=swing.SwingConstants.LEFT)
+		self.__display30.text = "15"
+		checkpanel2.add(self.__display30)
 		
 		self.contentPane.add(northpanel1, awt.BorderLayout.NORTH)
 		self.contentPane.add(checkpanel, awt.BorderLayout.WEST)
@@ -505,9 +560,9 @@ class StackCells(swing.JFrame):
 		if (self.__rm==None): self.__rm = RoiManager()
 
 		if self.__impF.getImageStackSize() > 1 :
-			roisarray =[(roi, self.__rm.getSliceNumber(roi.getName())) for roi in self.__rm.getRoisAsArray()]
+			roisarray =[(roi, self.__rm.getSliceNumber(roi.getName()), roi.getName()) for roi in self.__rm.getRoisAsArray()]
 		else : 
-			roisarray =[(roi, 1) for roi in self.__rm.getRoisAsArray()]
+			roisarray =[(roi, 1, roi.getName()) for roi in self.__rm.getRoisAsArray()]
 			
 		self.__rm.runCommand("reset")
 		#self.__rm.runCommand("Delete")
@@ -550,8 +605,8 @@ class StackCells(swing.JFrame):
 
 				m=Morph(self.__impF, roi)
 
-				twres.append(lab+tab+str(roi.getName())+tab+str(m.Solidity)+tab+str(m.Area)+tab+str(m.Circ)+tab+str(m.AR)+tab+str(m.MaxFeret)+tab+str(fer.getLength())+tab+str(1)+tab+str(0)+tab+str(0)+tab+str(0))
-				self.__dictCells[count]=(str(roi.getName()), lab, roi)
+				twres.append(lab+tab+str(roielement[2])+tab+str(m.Solidity)+tab+str(m.Area)+tab+str(m.Circ)+tab+str(m.AR)+tab+str(m.MaxFeret)+tab+str(fer.getLength())+tab+str(1)+tab+str(0)+tab+str(0)+tab+str(0))
+				self.__dictCells[count]=(str(roielement[2]), lab, roi)
 				count=count+1
 				continue
 			
@@ -559,6 +614,7 @@ class StackCells(swing.JFrame):
 				self.__impF.setSlice(pos)
 				self.__impF.setRoi(roi)
 				self.__rm.runCommand("Add")
+				
 
 			elif roi.getType() in [2,4] :
 				self.__impF.setSlice(pos)
@@ -594,24 +650,41 @@ class StackCells(swing.JFrame):
 				testfer = (minfer< m.MaxFeret < maxfer)
 				testmean = (minmean < m.Mean < maxmean)
 				testmferet = (minmferet < m.MinFeret < maxmferet)
+
+				
 				
 				#print minmferet , m.MinFeret , maxmferet
 
 				test = (testsol+testarea+testcirc+testar+testfer+testmean+testmferet)/7	
 
 				if test : 				
-					
 					fmaj, ffmx, fa =[],[],[]
-					for r in m.getMidSegments(10, 40, 0) :
+
+					nsegs = float(self.__display23.text)
+					minnsegs = float(self.__display24.text)
+					radius = float(self.__display25.text)
+					maxdiffmajor = float(self.__display26.text)
+					maxdiffferet = float(self.__display27.text)
+					maxdiffarea = float(self.__display28.text)
+
+					minwidth = float(self.__display29.text)
+					maxwidth = float(self.__display30.text)
+					
+					
+					for r in m.getMidSegments(nsegs, radius, 0) :
 						if r == None : continue
 						m2=Morph(self.__impF, r)
 						fmaj.append(m2.Major)
 						ffmx.append(m2.MaxFeret)
 						fa.append(m2.Area)
-
+					
 					diffmajor, diffferet, diffarea = 0,0,0
 					
-					if len(fa) > 4 :
+					if len(fa) > minnsegs :
+
+						if min(fmaj[1:-1]) < minwidth : continue
+						if max(fmaj[1:-1]) > maxwidth : continue
+											
 						medfmaj = self.listmean(fmaj[1:-1])
 						medffmx = self.listmean(ffmx[1:-1])
 						medfa   = self.listmean(fa[1:-1])
@@ -620,7 +693,11 @@ class StackCells(swing.JFrame):
 						diffferet = (max(ffmx[1:-1])-medffmx)/medffmx
 						diffarea = (max(fa[1:-1])-medfa)/medfa
 
-					twres.append(lab+tab+str(roi.getName())+tab+str(m.Solidity)+tab+str(m.Area)+tab+str(m.Circ)+tab+str(m.AR)+tab+str(m.MaxFeret)+tab+str(midroi.getLength())+tab+str(m.MaxFeret/midroi.getLength())+tab+str(diffmajor)+tab+str(diffferet)+tab+str(diffarea))
+						if diffmajor>maxdiffmajor or diffferet>maxdiffferet or diffarea>maxdiffarea : continue
+
+					else : continue
+
+					twres.append(lab+tab+str(roielement[2])+tab+str(m.Solidity)+tab+str(m.Area)+tab+str(m.Circ)+tab+str(m.AR)+tab+str(m.MaxFeret)+tab+str(midroi.getLength())+tab+str(m.MaxFeret/midroi.getLength())+tab+str(diffmajor)+tab+str(diffferet)+tab+str(diffarea))
 					#print lab+tab+str(roi.getName())+tab+str(m.Solidity)+tab+str(m.Area)+tab+str(m.Circ)+tab+str(m.AR)+tab+str(m.MaxFeret)+tab+str(midroi.getLength())+tab+str(m.MaxFeret/midroi.getLength())+tab+str(diffmajor)+tab+str(diffferet)+tab+str(diffarea)
 
 					self.__impF.setRoi(roi)
@@ -629,7 +706,7 @@ class StackCells(swing.JFrame):
 					self.__impF.setRoi(midroi)
 					
 					#self.__dictCells[str(roi.getName())]=(str(roi.getName()), lab, roi)
-					self.__dictCells[count]=(str(roi.getName()), lab, roi)
+					self.__dictCells[count]=(str(roielement[2]), lab, roi)
 					count=count+1
 					
 				else : 
