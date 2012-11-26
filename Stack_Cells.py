@@ -72,7 +72,7 @@ class StackCells(swing.JFrame):
 	def run(self) :
 		
 
-		self.size=(1100, 400)
+		self.size=(1125, 400)
 		self.contentPane.layout = awt.BorderLayout()
 		self.__display = swing.JTextField(preferredSize=(400, 30), horizontalAlignment=swing.SwingConstants.LEFT)
 		self.__setDisplay()
@@ -103,46 +103,46 @@ class StackCells(swing.JFrame):
 		northpanel2.setBorder(line)
 		label=swing.JLabel("Label2")
 		label.setText("Line width ?")
-		northpanel2.add(label)
+		#northpanel2.add(label)
 		self.__display2 = swing.JTextField(preferredSize=(50, 30), horizontalAlignment=swing.SwingConstants.LEFT)
 		self.__display2.text = "11"
-		northpanel2.add(self.__display2)
+		#northpanel2.add(self.__display2)
 
 		label=swing.JLabel("Label3")
 		label.setText("Noise for peaks ?")
-		northpanel2.add(label)
+		#northpanel2.add(label)
 		self.__display3 = swing.JTextField(preferredSize=(50, 30), horizontalAlignment=swing.SwingConstants.LEFT)
 		self.__display3.text = "100"
-		northpanel2.add(self.__display3)
+		#northpanel2.add(self.__display3)
 
 		label=swing.JLabel("Label4")
 		label.setText("Fluo threshold ?")
-		northpanel2.add(label)
+		#northpanel2.add(label)
 		self.__display4 = swing.JTextField(preferredSize=(50, 30), horizontalAlignment=swing.SwingConstants.LEFT)
 		self.__display4.text = "1"
-		northpanel2.add(self.__display4)
+		#northpanel2.add(self.__display4)
 		
 		#northpanel3=swing.JPanel(awt.FlowLayout(awt.FlowLayout.LEFT))
 		#northpanel3.setBorder(line)
 
 		label=swing.JLabel("Label5")
 		label.setText("Min of length ?")
-		northpanel2.add(label)
+		#northpanel2.add(label)
 		self.__display5 = swing.JTextField(preferredSize=(50, 30), horizontalAlignment=swing.SwingConstants.LEFT)
 		self.__display5.text = "5"
-		northpanel2.add(self.__display5)
+		#northpanel2.add(self.__display5)
 
 		label=swing.JLabel("Label6")
 		label.setText("Max of length ?")
-		northpanel2.add(label)
+		#northpanel2.add(label)
 		self.__display6 = swing.JTextField(preferredSize=(50, 30), horizontalAlignment=swing.SwingConstants.LEFT)
 		self.__display6.text = "500"
-		northpanel2.add(self.__display6)
+		#northpanel2.add(self.__display6)
 
 		dia = swing.JButton("DIA", size=(100, 70), actionPerformed= self.__dia)
-		northpanel2.add(dia)
+		#northpanel2.add(dia)
 		fluo = swing.JButton("FLUO", size=(100, 70), actionPerformed= self.__fluo)
-		northpanel2.add(fluo)
+		#northpanel2.add(fluo)
 
 
 		southpanel=swing.JPanel(awt.FlowLayout(awt.FlowLayout.RIGHT))
@@ -158,7 +158,7 @@ class StackCells(swing.JFrame):
 		southpanel.add(close)		
 				
 		grid = awt.GridLayout()
-		grid.setRows(4)
+		grid.setRows(9)
 		checkpanel=swing.JPanel(grid)
 		checkpanel.setBorder(line)
 		
@@ -205,24 +205,70 @@ class StackCells(swing.JFrame):
 		self.__box10=swing.JCheckBox(actionPerformed=self.__boxaction10)
 		self.__box10.setText("Use ellipses")
 		self.__box10.setSelected(False)
+
+		checkpanel.add(swing.JLabel("Output settings"))
+		checkpanel.add(swing.JLabel(" "))
+		checkpanel.add(swing.JLabel(" "))
+		checkpanel.add(swing.JLabel(" "))
 		
 		checkpanel.add(self.__box0)
 		checkpanel.add(self.__box1)
 		checkpanel.add(self.__box2)
 		checkpanel.add(self.__box3)
+		
 		checkpanel.add(self.__box4)
 		checkpanel.add(self.__box5)
 		checkpanel.add(self.__box6)
 		checkpanel.add(self.__box7)
+		
 		checkpanel.add(self.__box8)
 		checkpanel.add(self.__box9)
 		checkpanel.add(self.__box10)
+		checkpanel.add(swing.JLabel(" "))
+		
+		checkpanel.add(swing.JLabel(" "))
+		checkpanel.add(swing.JLabel(" "))
+		checkpanel.add(swing.JLabel(" "))
+		checkpanel.add(swing.JLabel(" "))
+		
+		checkpanel.add(swing.JLabel("Line width"))
+		checkpanel.add(self.__display2)
+		checkpanel.add(swing.JLabel("Noise for peaks"))
+		checkpanel.add(self.__display3)
+		
+		checkpanel.add(swing.JLabel("Min width (ROI)"))
+		checkpanel.add(self.__display5)
+		checkpanel.add(swing.JLabel("Max width (ROI)"))
+		checkpanel.add(self.__display6)
+
+		checkpanel.add(swing.JLabel(" "))
+		checkpanel.add(swing.JLabel(" "))
+		checkpanel.add(swing.JLabel(" "))
+		checkpanel.add(swing.JLabel(" "))
+
+		checkpanel.add(swing.JLabel(" "))
+		checkpanel.add(swing.JLabel(" "))
+		checkpanel.add(dia)
+		checkpanel.add(fluo)
+		
+		
 		
 		grid = awt.GridLayout()
-		grid.setRows(12)
+		grid.setRows(14)
 		checkpanel2=swing.JPanel(grid)
 		checkpanel2.setBorder(line)
 
+		checkpanel2.add(swing.JLabel("Settings for filter"))
+		checkpanel2.add(swing.JLabel(" "))
+		checkpanel2.add(swing.JLabel(" "))
+		checkpanel2.add(swing.JLabel(" "))
+
+		checkpanel2.add(swing.JLabel(" "))
+		checkpanel2.add(swing.JLabel(" "))
+		checkpanel2.add(swing.JLabel(" "))
+		checkpanel2.add(swing.JLabel(" "))
+		
+		
 		label=swing.JLabel("Label7")
 		label.setText("Max of Solidity")
 		checkpanel2.add(label)
@@ -346,14 +392,14 @@ class StackCells(swing.JFrame):
 		label.setText("N min de segments")
 		checkpanel2.add(label)
 		self.__display24 = swing.JTextField(preferredSize=(50, 30), horizontalAlignment=swing.SwingConstants.LEFT)
-		self.__display24.text = "4"
+		self.__display24.text = "8"
 		checkpanel2.add(self.__display24)
 
 		label=swing.JLabel("Label25")
 		label.setText("radius for segs")
 		checkpanel2.add(label)
 		self.__display25 = swing.JTextField(preferredSize=(50, 30), horizontalAlignment=swing.SwingConstants.LEFT)
-		self.__display25.text = "20"
+		self.__display25.text = "40"
 		checkpanel2.add(self.__display25)
 
 		label=swing.JLabel("Label26")
