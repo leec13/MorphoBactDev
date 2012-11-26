@@ -40,8 +40,8 @@ class OptionsDialog(swing.JFrame):
 		self.setDefaultCloseOperation(swing.JFrame.DISPOSE_ON_CLOSE)
 
 		self.__zonedir = IJ.getDirectory("image")
-		self.__zonesfile = "zones.zip"
-		
+		self.__zonesfile = ""
+		self.oked = False
 		self.run()
 	
 	def run(self) :
@@ -58,9 +58,9 @@ class OptionsDialog(swing.JFrame):
 
 		panel0=Panel()
 		zonesfile = swing.JButton("Select zones file... ", size=(100, 70), actionPerformed=self.__zones)
-		filezonespath = TextField(self.__zonedir+self.__zonesfile)
+		self.__filezonespath = TextField(self.__zonedir+self.__zonesfile)
 		panel0.add(zonesfile)
-		panel0.add(filezonespath)
+		panel0.add(self.__filezonespath)
 		northpanel.add(panel0)
 		
 
@@ -121,6 +121,7 @@ class OptionsDialog(swing.JFrame):
 		fd.show()
 		self.__zonedir = fd.getDirectory() 
 		self.__zonesfile = fd.getFile()
+		self.__filezonespath.text=(self.__zonedir+self.__zonesfile)
 		print self.__zonedir+self.__zonesfile
 	
 	def __close(self, event):

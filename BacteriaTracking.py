@@ -707,8 +707,11 @@ class Bacteria_Tracking(object) :
 		# -------- start end batch mode --------- # 
 		
 			if trackingstrat=="chemin commun" :
-				trackparams = OptionsDialog.settingsWindow()
-			
+				od = OptionsDialog()
+				od.show()
+				od.getSettings()
+				while not od.oked and od.isShowing() : 
+					od.getSettings()			
 		
 		if self.__optionTimelapse :
 			self.__dictTimeStack[imgName]=range(0,image.getImageStackSize()*self.__timelapse, self.__timelapse)
